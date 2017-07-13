@@ -14,6 +14,10 @@ class Contact(db.Model):
     def __str__(self):
         return self.email
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
 
 class ContactTrace(db.Model):
     __tablename__ = 'contacttrace'

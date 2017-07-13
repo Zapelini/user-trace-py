@@ -8,3 +8,4 @@ gunicorn==19.7.1
 psycopg2==2.7.1
 newrelic==2.88.1.73
 gevent==1.2.2
+marshmallow==2.13.5
