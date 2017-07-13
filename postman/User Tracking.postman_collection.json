@@ -1,0 +1,75 @@
+{
+	"variables": [],
+	"info": {
+		"name": "User Tracking",
+		"_postman_id": "1f69db9d-632f-75d9-2bfa-9d881a38562e",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 201\"] = responseCode.code === 201;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{user_tracking_url}}/api/contact",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "skip_before_filter",
+						"value": "verify_authenticity_token",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"jucabala2d3@fulano.com\",\n\t\"contacttrace\": [\n\t\t{\"url\": \"home\", \"date_access\": \"2017-07-11 06:30:13.599095\"},\n\t\t{\"url\": \"preco\", \"date_access\": \"2017-07-11 06:32:14.599095\"}\n\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Contacts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Count contact > 1\"] = jsonData.length >= 1;",
+							"",
+							"postman.setGlobalVariable(\"contact_id_1\", jsonData[0].id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{user_tracking_url}}/api/contact",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

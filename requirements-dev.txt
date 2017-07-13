@@ -1,0 +1,6 @@
+-r requirements.txt
+pytest
+pytest-cov
+requests-mock
+flake8
+pycodestyle

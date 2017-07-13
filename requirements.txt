@@ -1,0 +1,10 @@
+Flask==0.12.2
+Flask-Cors==3.0.3
+Flask-SQLAlchemy==2.2
+Flask-Migrate==2.0.4
+Flask-Restless==0.17.0
+Flask-Admin==1.5.0
+gunicorn==19.7.1
+psycopg2==2.7.1
+newrelic==2.88.1.73
+gevent==1.2.2
