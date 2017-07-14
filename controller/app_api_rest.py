@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, jsonify
 from marshmallow import Schema, fields, post_load
 
 from domain.contact import Contact, ContactTrace
@@ -10,16 +10,16 @@ class AppApiRest:
 
         @app.route("/contact.json", methods=['POST'])
         def api_contact():
-            contact_new = ContactSchema().load(request.json).data
+            contact_schema = ContactSchema().load(request.json)
+            if contact_schema.errors:
+                return jsonify(contact_schema.errors), 400
+            contact_new = contact_schema.data
+
             contacts_find = Contact.query.filter_by(email=contact_new.email)
             if contacts_find.first():
-                # contact = contacts_find.first()
-                # contact.contacttrace = contact_new.contacttrace
-                # contact.update()
-                contacts_find.first().update({"contacttrace": contact_new.contacttrace})
-                # contacttrace = contact_new.contacttrace
-                # contacttrace.contact_id = contacts_find.first().id
-                # contacttrace.save()
+                contact_new.id = contacts_find.first().id
+                contact_new.update()
+                contact = contact_new
             else:
                 contact = contact_new
                 contact.save()
@@ -37,7 +37,7 @@ class ContactTraceSchema(Schema):
 
 class ContactSchema(Schema):
     id = fields.Integer(dump_only=True)
-    email = fields.Email()
+    email = fields.Email(required=True)
     contacttrace = fields.Nested(ContactTraceSchema, many=True, load_only=True)
 
     @post_load

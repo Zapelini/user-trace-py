@@ -39,3 +39,10 @@ class ApiContactTest(unittest.TestCase):
         self.assertEqual(HTTPStatus.CREATED, response.status_code)
         self.assertEqual(response_json['email'], data['email'])
         self.assertEqual(1, response_json['id'])
+
+    def test_can_not_be_possible_to_create_an_invalid_contact_trace(self):
+        data = {"contacttrace": [{"url": "preco", "date_access": "2017-12-07 13:03:57"}]}
+        response = self.app.post('/contact.json', headers=self.headers, data=json.dumps(data))
+        response_json = json.loads(response.data.decode('utf-8'))
+        self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
+        self.assertEqual('Missing data for required field.', response_json['email'][0])
