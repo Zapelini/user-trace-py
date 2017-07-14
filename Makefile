@@ -49,17 +49,6 @@ db_migrate:
 	flask db migrate
 
 
-# make db_new rev="v1.0.0"
-.PHONY: db_new
-db_new:
-	alembic -x database_url=$(db) revision -m "$(rev)" --autogenerate
-
-
-.PHONY: db_version
-db_version:
-	alembic -x database_url=$(db) current
-
-
 run_server:
 	python -m wsgi
 
