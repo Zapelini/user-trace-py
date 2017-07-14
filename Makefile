@@ -22,7 +22,7 @@ test:
 
 
 test-cov:
-	py.test -v --cov-report=term  --cov-report=html --cov=domain,controller
+	py.test -v --cov-report=term  --cov-report=html --cov=controller
 
 
 code-convention:

@@ -11,8 +11,20 @@ class Contact(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow())
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow())
 
+    contacttrace = db.relationship("ContactTrace", back_populates="contact")
+
     def __str__(self):
         return self.email
+
+    def save(self):
+        with db.session.no_autoflush:
+            db.session.add(self)
+            db.session.commit()
+
+    def update(self):
+        with db.session.no_autoflush:
+            db.session.merge(self)
+            db.session.commit()
 
 
 class ContactTrace(db.Model):
@@ -25,7 +37,12 @@ class ContactTrace(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow())
 
     contact_id = db.Column(db.Integer, db.ForeignKey('contact.id'))
-    contact = db.relationship('Contact', backref=db.backref('contacttrace', lazy='dynamic'))
+    contact = db.relationship("Contact", back_populates="contacttrace")
 
     def __str__(self):
         return '{0} {1}'.format(self.url, self.contact_id)
+
+    def save(self):
+        with db.session.no_autoflush:
+            db.session.add(self)
+            db.session.commit()
